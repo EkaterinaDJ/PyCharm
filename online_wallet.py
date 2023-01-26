@@ -34,5 +34,4 @@ for guest in guest_list:
     print(guest.get_guest())
 
 
-# for
 # print(Customer_1)
