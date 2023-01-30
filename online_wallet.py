@@ -1,37 +1,77 @@
-# class Customers:
-#     def __init__(self, name, surname, city, balance):
-#         self.name = name
-#         self.surname = surname
-#         self.city = city
-#         self.balance = balance
-#     def __str__(self):
-#         return f'"{self.name} {self.surname}. {self.city}. Баланс: {self.balance} руб."'
-#
-# Customer_1 = Customers('Иван',  'Петров', 'Москва', 50)
-# print(Customer_1)
 
-class Customers:
-    def __init__(self, name, surname, city):
-        self.name = name
-        self.surname = surname
-        self.city = city
+numbers = input('Введите числа через пробел: ')
+user_number = int(input('Введите число: '))
 
-    # def __str__(self):
-    #     return f'"{self.name} {self.surname}. {self.city}."'
+# Функция для определения цифр в строке
 
-    def get_guest(self):
-        return f'{self.name} {self.surname}. {self.city}.'
+def is_int(str):
+    str = str.replace(' ', '')
+    try:
+        int(str)
+        return True
+    except ValueError:
+        return False
 
+# Проверка соответствия указанному в условии ввода данных.
 
-Customer_1 = Customers('Иван',  'Петров', 'Москва')
-Customer_2 = Customers('Петр', 'Иванов', 'Казань')
-Customer_3 = Customers('Елена', 'Федорова', 'Псков')
-Customer_4 = Customers('Василий','Сергеев', 'Гатчина')
-Customer_5 = Customers('Анна', 'Сергеева', 'Гатчина')
+if " " not in numbers:
+    print("\n Введите числа, согласно условиям ввода(пробел).")
+    numbers = input('Введите числа через пробел: ')
+if not is_int(numbers):
+    print('\n Введите числа, согласно условиям ввода(числа через пробел).\n')
+else:
+    numbers = numbers.split()
 
-guest_list = [Customer_1, Customer_2, Customer_3, Customer_4, Customer_5]
-for guest in guest_list:
-    print(guest.get_guest())
+# Меняем список строк на список чисел
 
+list_numbers = [int(item) for item in numbers]
 
-# print(Customer_1)
+# Сортировка  пузырьком
+
+for i in range(len(numbers)):
+    for j in range(len(numbers) - i - 1):
+        if numbers[j] > numbers[j + 1]:
+            numbers[j], numbers[j + 1] = numbers[j + 1], numbers[j]
+
+print(numbers)
+
+# Установка позиции элемента
+
+def binary_search(array, element, left, right):
+    try:
+        if left > right:
+            return False
+        middle = (right + left) // 2
+        if array[middle] == element:
+            return middle
+        elif element < array[middle]:
+            return binary_search(array, element, left, middle - 1)
+        else:
+            return binary_search(array, element, middle + 1, right)
+
+    except IndexError:
+
+        return 'Число выходит за границы диапазона спискаю Введите меньшее число.'
+
+if not binary_search(list_numbers, user_number, 0, len(list_numbers)):
+    rI = min(list_numbers, key=lambda x: (abs(x - user_number), x))
+    ind = list_numbers.index(rI)
+    max_ind = ind + 1
+    min_ind = ind - 1
+    if rI < user_number:
+        print(f'''В списке нет введенного элемента
+Ближайший меньший элемент: {rI}, его индекс: {ind}
+Ближайший больший элемент: {list_numbers[max_ind]} его индекс: {max_ind}''')
+    elif min_ind < 0:
+        print(f'''В списке нет введенного элемента
+Ближайший больший элемент: {rI}, его индекс: {list_numbers.index(rI)}
+В списке нет меньшего элемента''')
+    elif rI > user_number:
+        print(f'''В списке нет введенного элемента
+Ближайший больший элемент: {rI}, его индекс: {list_numbers.index(rI)}
+Ближайший меньший элемент: {list_numbers[min_ind]} его индекс: {min_ind}''')
+    elif list_numbers.index(rI) == 0:
+        print(f'Индекс введенного элемента: {list_numbers.index(rI)}')
+else:
+    print(f'Индекс введенного элемента: {binary_search(list_numbers, user_number, 0, len(list_numbers))}')
+
